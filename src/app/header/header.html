@@ -1,21 +1,27 @@
 <nav class="bg-gray-800 p-4">
-  <ul class="flex gap-6 text-white">
-    <li>
-      <a
-        routerLink="/"
-        routerLinkActive="text-green-400 font-semibold "
-        class="hover:text-green-300 transition"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Home</a
-      >
-    </li>
-    <li>
-      <a
-        routerLink="/seat-map"
-        routerLinkActive="text-green-400 font-semibold "
-        class="hover:text-green-300 transition"
-        >Seat Map</a
-      >
-    </li>
-  </ul>
+  <div class="container mx-auto flex justify-center">
+    <ul
+      class="flex flex-col sm:flex-row gap-3 sm:gap-6 text-white text-sm sm:text-base"
+    >
+      <li>
+        <a
+          routerLink="/"
+          routerLinkActive="text-green-400 font-semibold"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="hover:text-green-300 transition"
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/seat-map"
+          routerLinkActive="text-green-400 font-semibold"
+          class="hover:text-green-300 transition"
+        >
+          Seat Map
+        </a>
+      </li>
+    </ul>
+  </div>
 </nav>
