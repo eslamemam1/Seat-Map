@@ -44,6 +44,20 @@ export class SeatMap implements OnInit {
     });
   }
 
+  reset() {
+    this.seats.forEach((seat) => {
+      if (seat.status === 'reserved') {
+        seat.status = 'available';
+
+        if (seat.id) {
+          this.SeatService.updateSeat(seat.id, {
+            status: 'available',
+          }).subscribe();
+        }
+      }
+    });
+  }
+
   trackByIndex(index: number): number {
     return index;
   }
