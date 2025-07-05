@@ -1,75 +1,59 @@
 <h2
-  class="text-center font-bold text-white bg-gray-800 py-3 w-11/12 sm:w-1/2 mx-auto rounded mb-6 mt-10 text-lg sm:text-xl"
+  class="text-center font-bold text-white bg-gray-800 py-3 w-11/12 sm:w-1/2 mx-auto rounded mb-5 mt-10 text-lg sm:text-xl"
 >
-  STADIUM
+  STAGE
 </h2>
 
-<div class="flex flex-col items-center gap-4 px-4">
-  <!-- Seat Grid -->
+<div class="flex flex-col items-center space-y-2 sm:space-y-3 px-2 sm:px-0">
+  <!-- Render seat rows -->
   <div
-    *ngFor="let row of seats; let i = index"
-    class="flex justify-center gap-1 sm:gap-2"
+    *ngFor="let row of [].constructor(rows); let i = index; trackBy: trackByIndex"
+    class="flex gap-1 sm:gap-2 justify-center"
+    [ngStyle]="{ 'margin-left': (rows - i) * 4 + 'px' }"
   >
-    <ng-container *ngFor="let seat of row; let j = index">
-      <!-- Seat -->
-      <div
-        *ngIf="seat"
-        (click)="toggle(i, j)"
-        class="w-8 h-8 sm:w-10 sm:h-10 rounded-md flex items-center justify-center text-[10px] sm:text-xs cursor-pointer transition"
-        [ngClass]="{
-          'bg-gray-300': seat.status === 'available',
-          'bg-green-600 text-white': seat.status === 'selected',
-          'bg-red-500 text-white cursor-not-allowed': seat.status === 'reserved'
-        }"
-      >
-        {{ i + 1 }}-{{ j + 1 }}
-      </div>
-
-      <!-- Empty space -->
-      <div *ngIf="!seat" class="w-8 h-8 sm:w-10 sm:h-10"></div>
+    <ng-container
+      *ngFor="let col of [].constructor(cols); let j = index; trackBy: trackByIndex"
+    >
+      <ng-container *ngIf="getSeat(i + 1, j + 1) as seat">
+        <div
+          role="button"
+          [attr.aria-label]="'Seat ' + seat.row + '-' + seat.col"
+          (click)="toggle(seat)"
+          class="w-8 h-8 sm:w-10 sm:h-10 rounded-md flex items-center justify-center text-[10px] sm:text-xs cursor-pointer transition duration-200 select-none"
+          [ngClass]="{
+            'bg-gray-300': seat.status === 'available',
+            'bg-green-600 text-white': seat.status === 'selected',
+            'bg-red-500 text-white cursor-not-allowed': seat.status === 'reserved'
+          }"
+        >
+          {{ seat.row }}-{{ seat.col }}
+        </div>
+      </ng-container>
+      <div *ngIf="!getSeat(i + 1, j + 1)" class="w-8 h-8 sm:w-10 sm:h-10"></div>
     </ng-container>
   </div>
 
   <!-- Legend -->
-  <div
-    class="flex flex-wrap justify-center gap-4 text-xs sm:text-sm text-gray-700 mt-2"
-  >
-    <div class="flex items-center gap-2">
+  <div class="flex items-center gap-3 mt-4 text-xs sm:text-sm text-gray-700">
+    <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-gray-300 rounded-sm"></div>
       <span>Available</span>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-green-600 rounded-sm"></div>
       <span>Selected</span>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
       <div class="w-4 h-4 bg-red-500 rounded-sm"></div>
       <span>Reserved</span>
     </div>
   </div>
 
-  <!-- Seat Counters -->
-  <div class="text-sm sm:text-base text-gray-700 text-center mt-2">
-    <p>Available: <strong>{{ availableSeats }}</strong></p>
-    <p>Selected: <strong>{{ selectedSeats }}</strong></p>
-    <p>Reserved: <strong>{{ reservedSeats }}</strong></p>
-  </div>
-
-  <!-- Buttons -->
-  <div class="flex flex-wrap justify-center gap-4 mt-4">
-    <button
-      (click)="confirm()"
-      class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
-    >
-      Confirm
-    </button>
-  </div>
-
-  <!-- Toast Message -->
-  <div
-    *ngIf="showToast"
-    class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50"
+  <!-- Confirm Button -->
+  <button
+    class="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
+    (click)="confirm()"
   >
-    {{ toastMessage }}
-  </div>
+    Confirm Selection
+  </button>
 </div>
