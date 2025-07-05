@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// أنواع الحالة لكل كرسي
+// types of seat status
 export type SeatStatus = 'available' | 'reserved' | 'selected';
 
-// تعريف الواجهة الخاصة بالكرسي
+// Seat interface representing a seat in the seat map
 export interface Seat {
-  id?: string; // mockapi.io عادة يستخدم string للـ id
+  id?: string;
   row: number;
   col: number;
   status: SeatStatus;
